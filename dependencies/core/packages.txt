@@ -1,0 +1,5 @@
+sudo apt-get install
+    libsndfile1-dev
+
+
+    # https://github.com/ChristopheJacquet/PiFmRds
