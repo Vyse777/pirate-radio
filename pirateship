@@ -1,0 +1,44 @@
+#! /bin/sh
+# /etc/init.d/pirateship
+
+### BEGIN INIT INFO
+# Provides:          python3
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the PirateShip process
+# Description:       A simple script to start/stop the PirateShip process
+### END INIT INFO
+
+### DEPLOYMENT COMMENTS
+# To register this as a startup script deploy it to /etc/init.d/ with the filename pirateship
+# Run chmod +x 755 /etc/init.d/pirateship
+# Then run sudo update-rc.d pirateship defaults
+# This will register the script to run at console startup on the Raspberry Pi
+### END DEPLOYMENT COMMENTS
+
+# If you want a command to always run, put it here
+start
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting PirateShip"
+    # run application the & symbol states that we want it to run independant of the calling instance (async)
+    python3 /home/pi/PirateShip/PirateShip.py &
+    ;;
+  stop)
+    echo "Stopping PirateShip"
+    # kill application, this will fetch out the PirateShip application and kill it using the process ID
+    pid=`ps -ef | grep '[p]ython3 /home/pi/PirateShip/PirateShip.py' | awk '{ print $2 }'`
+    kill $pid
+    # Might be worth killing the sox and PI_FM_RDS processes since [currently] the Python script will not kill them gracefully if it is killed in the fasion above
+    ;;
+  *)
+    echo "Usage: /etc/init.d/pirateship {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
