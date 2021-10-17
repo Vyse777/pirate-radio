@@ -5,8 +5,8 @@ import random
 # Globals
 RUNTIME_DIR = "/home/pi/PirateShip/"
 AUDIO_FILES_DIRECTORY = RUNTIME_DIR + "music/"
-PI_FM_RDS = RUNTIME_DIR + "dependencies/core/pi_fm_rds"
-BROADCAST_FREQUENCY = "107.5"
+PI_FM_RDS = RUNTIME_DIR + "dependencies/core/pi_fm_rds_working"
+BROADCAST_FREQUENCY = "99.5" #"105.5"
 
 def main():
     # Do stuff
@@ -44,7 +44,7 @@ def play_playlist():
                 output = subprocess.Popen(["sudo", PI_FM_RDS, "-freq", BROADCAST_FREQUENCY, "-audio", "-"],stdin=subprocess.PIPE, stdout=subprocess.DEVNULL)
 
             # Processes mp3 to stdout (piped into the PI_FM_RDS process) using an input buffer.
-            ps = subprocess.Popen(['sox', '-t', 'mp3', (filename.rstrip()), '-t', 'wav', '--input-buffer', '80000', '-'], stdout=output.stdin)
+            ps = subprocess.Popen(['sox', '-v', '1.3', '-t', 'mp3', (filename.rstrip()), '-t', 'wav', '--input-buffer', '80000', '-r', '44100','-G', '-c', '2', '-'], stdout=output.stdin)
 
             # TODO: display what song is playing on the PS and RT range
             # https://github.com/ChristopheJacquet/PiFmRds

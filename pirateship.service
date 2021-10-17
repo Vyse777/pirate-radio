@@ -1,0 +1,10 @@
+[Unit]
+Description=Pirate Ship Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/PirateShip/PirateShip.py
+
+[Install]
+WantedBy=multi-user.target
